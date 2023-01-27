@@ -22,10 +22,10 @@ while True and chances > 0:
     print("====== ========= ======== ======")
     user_input = int(input("Enter your input (user): "))
 
-    res = square.get(user_input, -1) # change from 0 to -1
+    res = square.get(user_input, None) # change from -1 to None
     print("====== ========= ======== ======")
 
-    if res == -1:
+    if not res:
         print("The user value is not found")
         chances -= 1
     elif user_input in vis:
