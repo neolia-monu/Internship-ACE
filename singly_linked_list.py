@@ -2,81 +2,97 @@
     Singly LinkedList
 """
 
-class SinglyLinkedList():
+class Node:
 
     def __init__(self, data):
         self.data = data
         self.next = None
 
-    def add(self, data, root):
-        cur = root
-        while cur.next != None:
-            cur = cur.next
-        cur.next = SinglyLinkedList(data)
+class SinglyLinkedList:
 
-    def delete(self, data, root):
+    def __init__(self):
+        self.root = None
+
+    def add(self, data):
+        if self.root is None:
+            self.root = Node(data)
+        else:
+            traverse_node = self.root
+            while traverse_node.next is not None:
+                traverse_node = traverse_node.next
+            traverse_node.next = Node(data)
+
+    def delete(self, delete_data):
+        if self.root is None:
+            return False
+
+        traverse_node = self.root
+        prev_node = None
+        while traverse_node is not None and traverse_node.data != delete_data:
+            prev_node = traverse_node
+            traverse_node = traverse_node.next
         
-        if root == None:
-            return None
-
-        cur = self.search(data, root)
-        if cur is not None:
-            cur.next = cur.next.next
+        if prev_node is None:
+            self.root = traverse_node.next
             return True
-        
+
+        if prev_node is not None and traverse_node is not None:
+            prev_node.next = traverse_node.next
+            return True
+
         return False
         
 
-    def search(self, data, root):
-        cur = root
-        if cur is None:
-            return None
+    def search(self, searched_data):
+        if self.root is None:
+            return False
         
-        # edge case
-        if cur.data == data:
-            print("--- Data Found ---")
-            return cur
+        traverse_node = self.root
+        while traverse_node is not None:
+            if traverse_node.data == searched_data:
+                return True
+            traverse_node = traverse_node.next
         
-        while cur != None and cur.next != None:
-            if cur.next.data == data:
-                print("--- Data Found ---")
-                return cur
-            cur = cur.next
-        
-        print("--- Not Found ---")
-        return None
+        return False
     
-    def traversal(self, root):
-        if root is None:
-            print("Nothing to traverse")
-            return
-        cur = root
-        while cur.next != None:
-            print(str(cur.data) + "->", end=" ")
-            cur = cur.next
-        print(cur.data)
-        
+    def traversal(self):
+        if self.root is None:
+            return False
 
-head = SinglyLinkedList(0)
-cur = head
-n = 2
+        tmp_node = self.root
+        while tmp_node is not None:
+            print(str(tmp_node.data) + "->", end=" ")
+            tmp_node = tmp_node.next   
+
+
+
+"""
+  Create Object of the singly linked list
+"""
+node = SinglyLinkedList()
+
+
+# add element
 for n in range(1, 11):
-    cur.add(n, head)
-    n += 1
+    node.add(n)
 
-cur.traversal(head.next) # traveral
-cur.search(2, head)  # Data Found
-cur.search(12, head)  # Data Not Found
+# traverse the linked list
+print(node.traversal())
 
 
 """
-    Delete the node 8
+    Delete the node
 """
-print("----------- Delete node 8 ---------------")
-print(cur.delete(8, head))
+element = int(input("Enter delete element: "))
+print("----------- Delete node", element ,"---------------")
+print(node.delete(element))
 print("--------------------------")
 
 # search loop
-for n in range(1, 11):
-    # print(n)
-    cur.search(n, head)
+for n in range(1, 11, 2):
+    print(node.search(n))
+
+"""
+    Again traversal
+"""
+print(node.traversal())
